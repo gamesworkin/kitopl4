@@ -35,65 +35,71 @@
 
   <!-- Hero -->
   <section class="hero">
-    <section class="catalogo" id="youtube-section" style="padding-top: 40px;">
-    <!-- Barra de Busca -->
-    <div class="form-group" style="margin-bottom: 2rem;">
-        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos do canal..." class="form-control">
+    <section class="catalogo" id="youtube-section">
+    <div style="margin-bottom: 2rem;">
+        <h2 style="margin-bottom: 1rem;">Conteúdo do Canal</h2>
+        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos..." class="form-control" style="width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--primary-dim); border-radius: var(--radius); color: var(--text);">
     </div>
 
-    <!-- Player -->
-    <div id="yt-player-wrapper" style="width: 100%; aspect-ratio: 16/9; margin-bottom: 2.5rem; border: 1px solid var(--primary); border-radius: var(--radius); overflow: hidden; background: var(--bg); box-shadow: var(--shadow);">
-        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);">
-            Carregando player...
-        </div>
+    <!-- Grid de Vídeos (3 por linha) -->
+    <div class="grid" id="yt-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <!-- Vídeos carregados via JS -->
     </div>
 
-    <!-- Grid de Vídeos -->
-    <div class="grid" id="yt-grid" style="grid-template-columns: repeat(3, 1fr);"></div>
-
-    <!-- Link para Termos de Uso -->
-    <div style="text-align: center; margin-top: 2rem;">
+    <!-- Rodapé da Seção com Link para Termos -->
+    <div style="text-align: center; margin-top: 3rem;">
         <button onclick="toggleModal('terms-modal', true)" style="background: none; border: none; color: var(--text-muted); text-decoration: underline; cursor: pointer; font-size: 0.9rem;">
-            Ver Termos de Uso
+            Termos de Uso
         </button>
     </div>
 
-    <!-- Estrutura do Modal de Termos (Utilizando suas classes de CSS) -->
+    <!-- Modal de Termos de Uso -->
     <div id="terms-modal" class="modal-overlay" onclick="toggleModal('terms-modal', false)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
                 <h3>Termos de Uso</h3>
                 <button class="modal-close" onclick="toggleModal('terms-modal', false)">×</button>
             </div>
-            <div class="modal-body" style="text-align: left; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+            <div class="modal-body" style="text-align: left; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-height: 60vh; overflow-y: auto;">
                 <p><strong>Última atualização: 28 de julho de 2026</strong></p><br>
-                <p>Seja bem-vindo ao portal da Workin'Store.</p><br>
-                <p>Ao acessar e utilizar este site, você concorda com os presentes Termos de Uso...</p>
-                <p><em>(Adicione o restante do seu texto aqui)</em></p>
-                <br>
+                <p>Seja bem-vindo ao portal da Workin'Store. Ao acessar e utilizar este site, você concorda com os presentes Termos de Uso. Caso não concorde, recomendamos que não utilize este portal.</p><br>
+                
+                <p><strong>1. Objetivo do Portal</strong><br>O portal da Workin'Store tem como finalidade apresentar produtos, divulgar serviços, disponibilizar informações, promover conteúdos do canal oficial no YouTube e oferecer meios de contato.</p><br>
+                
+                <p><strong>2. Utilização do Site</strong><br>O usuário compromete-se a utilizar este portal de maneira ética. É proibido qualquer uso ilegal, tentativas de invasão ou cópia integral para fins comerciais.</p><br>
+                
+                <p><strong>3. Produtos e Serviços</strong><br>As informações possuem caráter informativo. Preços e disponibilidade podem ser alterados sem aviso prévio.</p><br>
+                
+                <p><strong>4. Conteúdo do Canal no YouTube</strong><br>Exibimos vídeos do nosso canal oficial. Estes conteúdos seguem os Termos de Serviço da plataforma YouTube.</p><br>
+                
+                <p><strong>5. Propriedade Intelectual</strong><br>Todo o conteúdo (textos, logotipos, imagens) pertence à Workin'Store ou possui autorização de uso.</p><br>
+                
+                <p><strong>6. Links para Terceiros</strong><br>Não nos responsabilizamos pelo conteúdo ou políticas de sites externos acessados via links.</p><br>
+                
+                <p><strong>7. Limitação de Responsabilidade</strong><br>Não garantimos que o site esteja livre de erros ou interrupções, não nos responsabilizando por prejuízos decorrentes de falhas técnicas.</p><br>
+                
+                <p><strong>8. Privacidade</strong><br>O tratamento de dados segue nossa Política de Privacidade.</p><br>
+                
+                <p><strong>9. Alterações dos Termos</strong><br>Estes termos podem ser modificados a qualquer momento.</p><br>
+                
+                <p><strong>10. Legislação Aplicável</strong><br>Regidos pelas leis da República Federativa do Brasil.</p><br>
+                
+                <p><strong>11. Contato</strong><br>Dúvidas podem ser sanadas através dos nossos canais oficiais.</p><br>
+                
                 <button class="btn-primary" onclick="toggleModal('terms-modal', false)">Entendi</button>
             </div>
         </div>
     </div>
-
-    <style>
-        @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr) !important; } }
-        @media (max-width: 640px) { .grid { grid-template-columns: 1fr !important; } }
-    </style>
 </section>
 
 <script>
     const API_KEY = 'SUA_API_KEY_AQUI'; 
     const CHANNEL_ID = 'SEU_CHANNEL_ID_AQUI';
 
-    // Controle do Modal
     function toggleModal(id, open) {
-        const modal = document.getElementById(id);
-        if(open) modal.classList.add('open');
-        else modal.classList.remove('open');
+        document.getElementById(id).classList.toggle('open', open);
     }
 
-    // Carregamento de Vídeos
     async function loadVideos() {
         const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=15&type=video`;
         try {
@@ -102,7 +108,7 @@
             const grid = document.getElementById('yt-grid');
             grid.innerHTML = '';
             
-            data.items.forEach((video, index) => {
+            data.items.forEach(video => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -111,26 +117,23 @@
                         <h3 class="card-title">${video.snippet.title}</h3>
                     </div>
                 `;
-                card.onclick = () => playVideo(video.id.videoId);
+                card.onclick = () => window.open(`https://www.youtube.com/watch?v=${video.id.videoId}`, '_blank');
                 grid.appendChild(card);
-                if(index === 0) playVideo(video.id.videoId);
             });
-        } catch (e) { console.error(e); }
-    }
-
-    function playVideo(videoId) {
-        document.getElementById('yt-player-wrapper').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+        } catch (e) { console.error('Erro ao carregar vídeos:', e); }
     }
 
     document.getElementById('yt-search-input').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         document.querySelectorAll('.card').forEach(card => {
-            card.style.display = card.querySelector('.card-title').innerText.toLowerCase().includes(term) ? '' : 'none';
+            const title = card.querySelector('.card-title').innerText.toLowerCase();
+            card.style.display = title.includes(term) ? '' : 'none';
         });
     });
 
     loadVideos();
 </script>
+
 
   </section>
 
