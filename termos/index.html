@@ -35,25 +35,9 @@
 
   <!-- Hero -->
   <section class="hero">
-    <section class="catalogo" id="youtube-section">
-    <div style="margin-bottom: 2rem;">
-        <h2 style="margin-bottom: 1rem;">Conteúdo do Canal</h2>
-        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos..." class="form-control" style="width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--primary-dim); border-radius: var(--radius); color: var(--text);">
-    </div>
-
-    <!-- Grid de Vídeos (3 por linha) -->
-    <div class="grid" id="yt-grid" style="grid-template-columns: repeat(3, 1fr);">
-        <!-- Vídeos carregados via JS -->
-    </div>
 
     <!-- Rodapé da Seção com Link para Termos -->
-    <div style="text-align: center; margin-top: 3rem;">
-        <button onclick="toggleModal('terms-modal', true)" style="background: none; border: none; color: var(--text-muted); text-decoration: underline; cursor: pointer; font-size: 0.9rem;">
-            Termos de Uso
-        </button>
-    </div>
-
-    <!-- Modal de Termos de Uso -->
+    
     <div id="terms-modal" class="modal-overlay" onclick="toggleModal('terms-modal', false)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
