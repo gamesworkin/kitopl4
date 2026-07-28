@@ -35,23 +35,36 @@
 
   <!-- Hero -->
   <section class="hero">
-    <div class="yt-widget">
-    <div class="yt-header">
-        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos...">
+    <section class="catalogo" id="youtube-section" style="padding-top: 40px;">
+    <!-- Barra de Busca -->
+    <div class="form-group" style="margin-bottom: 2rem;">
+        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos do canal..." class="form-control">
     </div>
-    
-    <div id="yt-player-wrapper" class="yt-player-wrapper">
-        <!-- O player aparecerá aqui -->
+
+    <!-- Player Ampliado -->
+    <div id="yt-player-wrapper" style="width: 100%; aspect-ratio: 16/9; margin-bottom: 2.5rem; border: 1px solid var(--primary); border-radius: var(--radius); overflow: hidden; background: var(--bg); box-shadow: var(--shadow);">
+        <!-- O player será carregado aqui -->
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);">
+            Carregando player...
+        </div>
     </div>
-    
-    <div id="yt-grid" class="yt-grid">
-        <!-- Os vídeos carregarão aqui -->
+
+    <!-- Grid de Vídeos (Forçado 3 por linha) -->
+    <div class="grid" id="yt-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <!-- Os vídeos serão carregados aqui -->
     </div>
-</div>
+
+    <style>
+        @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr !important; } }
+    </style>
+</section>
 
 <script>
-    const API_KEY = 'AIzaSyDHkLh2vGgxUJpVo11o1kKqtH1DQ5Toeu4';
-    const CHANNEL_ID = 'UCwgc-ODtpi4OKxnbYGmyTig'; // O ID do canal que você quer exibir
+    // --- CONFIGURAÇÃO ---
+    const API_KEY = 'SUA_API_KEY_AQUI'; // <--- INSIRA SUA CHAVE AQUI
+    const CHANNEL_ID = 'SEU_CHANNEL_ID_AQUI'; // <--- INSIRA SEU ID DE CANAL AQUI
+    // --------------------
 
     async function loadVideos() {
         const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=15&type=video`;
@@ -59,41 +72,43 @@
         try {
             const response = await fetch(url);
             const data = await response.json();
-            renderVideos(data.items);
+            const grid = document.getElementById('yt-grid');
+            grid.innerHTML = '';
             
-            // Player inicial com o primeiro vídeo
-            if(data.items.length > 0) playVideo(data.items[0].id.videoId);
+            data.items.forEach((video, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${video.snippet.thumbnails.high.url}" alt="${video.snippet.title}" class="card-img">
+                    <div class="card-body">
+                        <h3 class="card-title">${video.snippet.title}</h3>
+                        <p class="card-desc">${video.snippet.description || 'Sem descrição.'}</p>
+                    </div>
+                `;
+                card.onclick = () => playVideo(video.id.videoId);
+                grid.appendChild(card);
+                
+                // Player inicial com o primeiro vídeo
+                if(index === 0) playVideo(video.id.videoId);
+            });
         } catch (error) {
-            console.error('Erro ao buscar vídeos:', error);
+            console.error('Erro ao carregar vídeos:', error);
+            document.getElementById('yt-grid').innerHTML = '<p>Erro ao carregar vídeos. Verifique sua chave API.</p>';
         }
-    }
-
-    function renderVideos(videos) {
-        const grid = document.getElementById('yt-grid');
-        grid.innerHTML = '';
-        
-        videos.forEach(video => {
-            const div = document.createElement('div');
-            div.className = 'yt-item';
-            div.innerHTML = `
-                <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
-                <p>${video.snippet.title}</p>
-            `;
-            div.onclick = () => playVideo(video.id.videoId);
-            grid.appendChild(div);
-        });
     }
 
     function playVideo(videoId) {
         const wrapper = document.getElementById('yt-player-wrapper');
-        wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+        wrapper.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allowfullscreen></iframe>`;
+        window.scrollTo({ top: document.getElementById('youtube-section').offsetTop - 100, behavior: 'smooth' });
     }
 
-    // Filtro de pesquisa
+    // Filtro de busca (Interage com os títulos dos cards)
     document.getElementById('yt-search-input').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
-        document.querySelectorAll('.yt-item').forEach(item => {
-            item.style.display = item.innerText.toLowerCase().includes(term) ? '' : 'none';
+        document.querySelectorAll('.card').forEach(card => {
+            const title = card.querySelector('.card-title').innerText.toLowerCase();
+            card.style.display = title.includes(term) ? '' : 'none';
         });
     });
 
