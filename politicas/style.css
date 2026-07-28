@@ -1036,11 +1036,11 @@ footer {
   animation: fadeInUp 0.5s ease both;
 }
 
-/* Estilos para a seção de Política de Privacidade */
+/* Estilos ajustados para evitar sobreposição do header fixo */
 .privacy-section {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+  margin: 0 auto;
+  padding: 100px 1.5rem 40px; /* padding-top de 100px resolve o problema do header fixo */
 }
 
 .privacy-container {
