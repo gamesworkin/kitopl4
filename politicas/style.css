@@ -1035,3 +1035,97 @@ footer {
 .info-box {
   animation: fadeInUp 0.5s ease both;
 }
+
+/* Estilos para a Seção de Política de Privacidade */
+.privacy-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 120px 1.5rem 80px;
+}
+
+.privacy-container {
+  background: var(--surface);
+  border: 1px solid rgba(102, 252, 241, 0.15);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+}
+
+.privacy-header {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.privacy-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.privacy-updated {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.privacy-updated span {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.privacy-intro {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.privacy-divider {
+  border: 0;
+  height: 1px;
+  background: rgba(102, 252, 241, 0.15);
+  margin: 2rem 0;
+}
+
+.privacy-block {
+  margin-bottom: 2rem;
+}
+
+.privacy-block h2 {
+  font-size: 1.25rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.privacy-block p {
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  font-size: 0.98rem;
+}
+
+.privacy-list {
+  list-style-type: none;
+  padding-left: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.privacy-list li {
+  position: relative;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.privacy-list li::before {
+  content: '▸';
+  position: absolute;
+  left: -1.2rem;
+  color: var(--primary);
+}
+
+@media (max-width: 640px) {
+  .privacy-container {
+    padding: 1.5rem;
+  }
+}
