@@ -35,87 +35,103 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Termos de uso</h1>
-    <p>Termos de Uso
+    <section class="catalogo" id="youtube-section" style="padding-top: 40px;">
+    <!-- Barra de Busca -->
+    <div class="form-group" style="margin-bottom: 2rem;">
+        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos do canal..." class="form-control">
+    </div>
 
-Última atualização: 28 de julho de 2026
+    <!-- Player -->
+    <div id="yt-player-wrapper" style="width: 100%; aspect-ratio: 16/9; margin-bottom: 2.5rem; border: 1px solid var(--primary); border-radius: var(--radius); overflow: hidden; background: var(--bg); box-shadow: var(--shadow);">
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted);">
+            Carregando player...
+        </div>
+    </div>
 
-Seja bem-vindo ao portal da Workin'Store.
+    <!-- Grid de Vídeos -->
+    <div class="grid" id="yt-grid" style="grid-template-columns: repeat(3, 1fr);"></div>
 
-Ao acessar e utilizar este site, você concorda com os presentes Termos de Uso. Caso não concorde com qualquer uma das condições descritas abaixo, recomendamos que não utilize este portal.
+    <!-- Link para Termos de Uso -->
+    <div style="text-align: center; margin-top: 2rem;">
+        <button onclick="toggleModal('terms-modal', true)" style="background: none; border: none; color: var(--text-muted); text-decoration: underline; cursor: pointer; font-size: 0.9rem;">
+            Ver Termos de Uso
+        </button>
+    </div>
 
-1. Objetivo do Portal
+    <!-- Estrutura do Modal de Termos (Utilizando suas classes de CSS) -->
+    <div id="terms-modal" class="modal-overlay" onclick="toggleModal('terms-modal', false)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Termos de Uso</h3>
+                <button class="modal-close" onclick="toggleModal('terms-modal', false)">×</button>
+            </div>
+            <div class="modal-body" style="text-align: left; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                <p><strong>Última atualização: 28 de julho de 2026</strong></p><br>
+                <p>Seja bem-vindo ao portal da Workin'Store.</p><br>
+                <p>Ao acessar e utilizar este site, você concorda com os presentes Termos de Uso...</p>
+                <p><em>(Adicione o restante do seu texto aqui)</em></p>
+                <br>
+                <button class="btn-primary" onclick="toggleModal('terms-modal', false)">Entendi</button>
+            </div>
+        </div>
+    </div>
 
-O portal da Workin'Store tem como finalidade apresentar produtos, divulgar serviços, disponibilizar informações, promover conteúdos do canal oficial no YouTube e oferecer meios de contato entre visitantes e a loja.
+    <style>
+        @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr !important; } }
+    </style>
+</section>
 
-As informações disponibilizadas possuem caráter informativo e poderão ser atualizadas, modificadas ou removidas a qualquer momento, sem necessidade de aviso prévio.
+<script>
+    const API_KEY = 'SUA_API_KEY_AQUI'; 
+    const CHANNEL_ID = 'SEU_CHANNEL_ID_AQUI';
 
-2. Utilização do Site
+    // Controle do Modal
+    function toggleModal(id, open) {
+        const modal = document.getElementById(id);
+        if(open) modal.classList.add('open');
+        else modal.classList.remove('open');
+    }
 
-O usuário compromete-se a utilizar este portal de maneira ética, responsável e em conformidade com a legislação brasileira.
+    // Carregamento de Vídeos
+    async function loadVideos() {
+        const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=15&type=video`;
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const grid = document.getElementById('yt-grid');
+            grid.innerHTML = '';
+            
+            data.items.forEach((video, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <img src="${video.snippet.thumbnails.high.url}" alt="${video.snippet.title}" class="card-img">
+                    <div class="card-body">
+                        <h3 class="card-title">${video.snippet.title}</h3>
+                    </div>
+                `;
+                card.onclick = () => playVideo(video.id.videoId);
+                grid.appendChild(card);
+                if(index === 0) playVideo(video.id.videoId);
+            });
+        } catch (e) { console.error(e); }
+    }
 
-É proibido:
+    function playVideo(videoId) {
+        document.getElementById('yt-player-wrapper').innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+    }
 
-- utilizar o site para qualquer finalidade ilegal;
-- tentar invadir, comprometer ou prejudicar o funcionamento do portal;
-- copiar integralmente conteúdos para fins comerciais sem autorização;
-- praticar qualquer atividade que possa comprometer a segurança dos sistemas utilizados.
+    document.getElementById('yt-search-input').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.display = card.querySelector('.card-title').innerText.toLowerCase().includes(term) ? '' : 'none';
+        });
+    });
 
-3. Produtos e Serviços
+    loadVideos();
+</script>
 
-Os produtos apresentados neste portal possuem finalidade informativa e comercial.
-
-Disponibilidade, preços, promoções, especificações técnicas e condições de venda poderão ser alterados sem aviso prévio.
-
-As imagens utilizadas possuem caráter ilustrativo e podem apresentar pequenas diferenças em relação ao produto real.
-
-4. Conteúdo do Canal no YouTube
-
-Este portal poderá exibir vídeos publicados no canal oficial da Workin'Store por meio da plataforma YouTube.
-
-Os vídeos permanecem sujeitos aos Termos de Serviço e às políticas da plataforma responsável por sua hospedagem.
-
-5. Propriedade Intelectual
-
-Todo o conteúdo disponibilizado neste portal, incluindo textos, logotipos, identidade visual, imagens, artes, ícones, organização do site e demais materiais, pertence à Workin'Store ou é utilizado mediante autorização.
-
-É proibida a reprodução, distribuição ou utilização sem autorização prévia, salvo quando expressamente permitido pela legislação.
-
-6. Links para Terceiros
-
-O portal poderá conter links para sites, redes sociais, marketplaces ou plataformas externas.
-
-A Workin'Store não possui responsabilidade pelo conteúdo, políticas de privacidade, disponibilidade ou funcionamento desses serviços de terceiros.
-
-7. Limitação de Responsabilidade
-
-Embora sejam adotadas medidas para manter as informações corretas e atualizadas, não garantimos que o portal esteja livre de erros, interrupções temporárias ou indisponibilidades.
-
-A Workin'Store não será responsável por eventuais prejuízos decorrentes da utilização do portal, indisponibilidade temporária dos serviços ou falhas causadas por fatores externos.
-
-8. Privacidade
-
-O tratamento de informações fornecidas pelos usuários será realizado conforme descrito na Política de Privacidade do portal.
-
-Ao utilizar nossos serviços, o usuário declara estar ciente dessa política.
-
-9. Alterações dos Termos
-
-Estes Termos de Uso poderão ser modificados a qualquer momento para refletir mudanças nos serviços, na legislação ou nas funcionalidades do portal.
-
-A versão mais recente estará sempre disponível nesta página.
-
-10. Legislação Aplicável
-
-Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil.
-
-Sempre que possível, eventuais conflitos serão resolvidos de forma amigável entre as partes.
-
-11. Contato
-
-Em caso de dúvidas sobre estes Termos de Uso, entre em contato pelos canais oficiais disponibilizados no portal da Workin'Store.
-
-O uso contínuo deste portal representa a aceitação integral destes Termos de Uso.</p>
   </section>
 
 
