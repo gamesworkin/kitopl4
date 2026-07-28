@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Workin'Store |Termos de uso</title>
+  <title>Workin'Store | Termos de uso</title>
   <meta name="description" content="Catálogo de produtos gamer com menu personalizável, admin exclusivo e integração Firebase.">
   <link rel="icon" type="image/x-icon" href="fav.ico">
   <link rel="stylesheet" href="style.css">
@@ -35,17 +35,6 @@
 
   <!-- Hero -->
   <section class="hero">
-<section class="catalogo" id="youtube-section" style="padding-top: 40px; max-width: 1200px; margin: 0 auto;">
-    
-    <!-- Seção de Vídeos -->
-    <div style="margin-bottom: 3rem;">
-        <h2 style="margin-bottom: 1rem;">Conteúdo do Canal</h2>
-        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos..." class="form-control" style="width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--primary-dim); border-radius: var(--radius); color: var(--text); margin-bottom: 1.5rem;">
-        
-        <div class="grid" id="yt-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
-            <!-- Vídeos carregados via JS -->
-        </div>
-    </div>
 
     <!-- Termos de Uso Exibidos no Corpo do Site -->
     <div class="terms-container" style="background: var(--surface-solid); padding: 2rem; border-radius: var(--radius); border: 1px solid rgba(102, 252, 241, 0.1); color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
@@ -75,45 +64,6 @@
         
         <p><strong>11. Contato</strong><br>Dúvidas podem ser sanadas através dos nossos canais oficiais.</p>
     </div>
-</section>
-
-<script>
-    const API_KEY = 'SUA_API_KEY_AQUI'; 
-    const CHANNEL_ID = 'SEU_CHANNEL_ID_AQUI';
-
-    async function loadVideos() {
-        const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=15&type=video`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            const grid = document.getElementById('yt-grid');
-            grid.innerHTML = '';
-            
-            data.items.forEach(video => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <img src="${video.snippet.thumbnails.high.url}" alt="${video.snippet.title}" class="card-img">
-                    <div class="card-body">
-                        <h3 class="card-title">${video.snippet.title}</h3>
-                    </div>
-                `;
-                card.onclick = () => window.open(`https://www.youtube.com/watch?v=${video.id.videoId}`, '_blank');
-                grid.appendChild(card);
-            });
-        } catch (e) { console.error('Erro ao carregar vídeos:', e); }
-    }
-
-    document.getElementById('yt-search-input').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-            const title = card.querySelector('.card-title').innerText.toLowerCase();
-            card.style.display = title.includes(term) ? '' : 'none';
-        });
-    });
-
-    loadVideos();
-</script>
 
   </section>
 
