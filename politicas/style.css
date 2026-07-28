@@ -1036,11 +1036,11 @@ footer {
   animation: fadeInUp 0.5s ease both;
 }
 
-/* Estilos para a Seção de Política de Privacidade */
+/* Estilos para a seção de Política de Privacidade */
 .privacy-section {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 120px 1.5rem 80px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
 }
 
 .privacy-container {
@@ -1048,16 +1048,14 @@ footer {
   border: 1px solid rgba(102, 252, 241, 0.15);
   border-radius: var(--radius);
   padding: 2.5rem;
-  box-shadow: var(--shadow);
 }
 
 .privacy-header {
   margin-bottom: 2rem;
-  text-align: left;
 }
 
 .privacy-title {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-size: 2rem;
   color: var(--primary);
   margin-bottom: 0.5rem;
 }
@@ -1074,7 +1072,8 @@ footer {
 
 .privacy-intro {
   margin-bottom: 1rem;
-  font-size: 1.05rem;
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--text);
 }
 
@@ -1092,16 +1091,14 @@ footer {
 .privacy-block h2 {
   font-size: 1.25rem;
   color: var(--primary);
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .privacy-block p {
   color: var(--text);
   margin-bottom: 0.75rem;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .privacy-list {
@@ -1113,8 +1110,9 @@ footer {
 .privacy-list li {
   position: relative;
   color: var(--text-muted);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .privacy-list li::before {
