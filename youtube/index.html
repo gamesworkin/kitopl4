@@ -35,8 +35,71 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Quem somos?</h1>
-    <p>A Workin'Store é uma empresa voltada a acessórios de PS2 e Games, temos loja online na Shopee e no Mercado Livre. Fundada em junho de 2024 a empresa começou vendendo produtos eletrônicos como fones de ouvido com fio e Bluetooth, mini teclados, cabos e carregadores para celulares, e, o PS2 se mostrou muito forte abrangendo mais espaço dentre os demais produtos. No final de 2024, a Workin'Store entrou em parceria com o editor Di para editar seus próprios Bomba Patches e em 2026 essa marca se espande cada vez mais com o Bomba Patch Workin' e demais serviços que você encontra nesse portal.</p>
+    <div class="yt-widget">
+    <div class="yt-header">
+        <input type="text" id="yt-search-input" placeholder="Pesquisar vídeos...">
+    </div>
+    
+    <div id="yt-player-wrapper" class="yt-player-wrapper">
+        <!-- O player aparecerá aqui -->
+    </div>
+    
+    <div id="yt-grid" class="yt-grid">
+        <!-- Os vídeos carregarão aqui -->
+    </div>
+</div>
+
+<script>
+    const API_KEY = 'AIzaSyDHkLh2vGgxUJpVo11o1kKqtH1DQ5Toeu4';
+    const CHANNEL_ID = 'UCwgc-ODtpi4OKxnbYGmyTig'; // O ID do canal que você quer exibir
+
+    async function loadVideos() {
+        const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=15&type=video`;
+        
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            renderVideos(data.items);
+            
+            // Player inicial com o primeiro vídeo
+            if(data.items.length > 0) playVideo(data.items[0].id.videoId);
+        } catch (error) {
+            console.error('Erro ao buscar vídeos:', error);
+        }
+    }
+
+    function renderVideos(videos) {
+        const grid = document.getElementById('yt-grid');
+        grid.innerHTML = '';
+        
+        videos.forEach(video => {
+            const div = document.createElement('div');
+            div.className = 'yt-item';
+            div.innerHTML = `
+                <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+                <p>${video.snippet.title}</p>
+            `;
+            div.onclick = () => playVideo(video.id.videoId);
+            grid.appendChild(div);
+        });
+    }
+
+    function playVideo(videoId) {
+        const wrapper = document.getElementById('yt-player-wrapper');
+        wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+    }
+
+    // Filtro de pesquisa
+    document.getElementById('yt-search-input').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        document.querySelectorAll('.yt-item').forEach(item => {
+            item.style.display = item.innerText.toLowerCase().includes(term) ? '' : 'none';
+        });
+    });
+
+    loadVideos();
+</script>
+
   </section>
 
 
