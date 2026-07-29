@@ -1041,7 +1041,7 @@ footer {
 .privacy-section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0px 1rem 0px; /* padding-top de 01px resolve o problema do header fixo */
+  padding: 0px 1.5rem 40px; /* padding-top de 01px resolve o problema do header fixo */
 }
 
 .privacy-container {
@@ -1049,10 +1049,6 @@ footer {
   border: 1px solid rgba(102, 252, 241, 0.15);
   border-radius: var(--radius);
   padding: 2.5rem;
-}
-
-.privacy-header {
-  margin-bottom: 2rem;
 }
 
 .privacy-title {
